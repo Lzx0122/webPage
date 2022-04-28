@@ -41,8 +41,6 @@ function gethtml(method, url, response) {
 
         return false;
     }
-
-
     if (url === "/") {
         sendRespones("index.html", 200, response);
         return true;
