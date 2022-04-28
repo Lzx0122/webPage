@@ -1,8 +1,8 @@
-// function handle_click(e) {
-//     alert(e.text);
+function handle_click(e) {
+    console.log("登入按鈕");
+    alert("登入")
 
-
-// }
+}
 
 
 var login_btn = document.getElementById("login_btn");
