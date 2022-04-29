@@ -1,4 +1,6 @@
-var mysql = require('mysql');
+
+import * as mysql from 'mysql';
+
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -6,17 +8,35 @@ var connection = mysql.createConnection({
     password: '0000',
     database: 'test'
 });
+function open() {
 
-connection.connect();
+    connection.connect();
+}
 
-connection.query("update test.Employee set password='1234' WHERE account='sa'", function (error, results, fields) {
-    if (error) {
-        console.log(error);
-        return;
-    }
-    for (var i = 0; i < results.length; i++) {
-        console.log(`${results[i].account},${results[i].password}`);
-    };
+function startSQL(strSQL) {
 
-})
-connection.end();
+    open();
+    connection.query(strSQL, function (error, results, fields) {
+        if (error) {
+            console.log(error);
+            connection.end();
+            return "false";
+        }
+        console.log(strSQL);
+        for (var i = 0; i < results.length; i++) {
+
+            console.log(`${results[i].account},${results[i].password}`);
+            connection.end();
+            return "true";
+
+        };
+        connection.end();
+        return "false";
+    })
+
+
+
+}
+
+export { open };
+export { startSQL };

@@ -1,14 +1,16 @@
 // var con = new ActiveXObject("ADODB.Connection")
 // con.ConnectionString = "server=localhost;port=3306;user id=root"
 // con.Open;
+import * as lib from "./script/lib.js";
 
+import * as http from "http";
+import * as fs from "fs";
 
-const http = require("http");
-const fs = require("fs");
 
 const sendRespones = (filename, statusCode, response) => {
+
     console.log(`sendRespones ${filename}`);
-    fs.readFile(`./html/${filename}`, (error, data) => {
+    fs.readFile(`.${filename}`, (error, data) => {
         if (error) {
             response.statusCode = 500;
             response.setHeader("Content-Type", "text/plain")
@@ -22,38 +24,62 @@ const sendRespones = (filename, statusCode, response) => {
 }
 
 const server = http.createServer((request, response) => {
+
     const method = request.method;
     const url = request.url;
-
-
     console.log(url, method);
+    if (method === "GET") {
+        gethtml(url, response);
+    } else {
+        console.log("/process-login");
+        if (url === "/process-login") {
 
-    gethtml(method, url, response);
-
-
+            login(request);
+            ``
+        }
+    }
 });
-
-function gethtml(method, url, response) {
+// 檢查url內html位置判斷 發送到 sendRespones
+function gethtml(url, response) {
 
     console.log(`gethtml ${url}`);
-
-    if (method !== "GET") {
-
-        return false;
-    }
     if (url === "/") {
-        sendRespones("index.html", 200, response);
+        sendRespones("/html/login.html", 200, response);
+        return true;
+    }
+    if (url === "/login.html") {
+        sendRespones("/html/login.html", 200, response);
         return true;
     }
     if (url === "/main.html") {
-        sendRespones("main.html", 200, response);
+        sendRespones("/html/main.html", 200, response);
         return true;
     }
-
+    if (url === "/script/JavaScript.js") {
+        sendRespones("/script/JavaScript.js", 200, response);
+        return true;
+    }
     sendRespones("/404.html", 404, response);
     return true;
+}
+
+function login(request) {
+
+    let body = [];
+    request.on("data", (chunk) => {
+        body.push(chunk);
+
+    });
+    request.on("end", () => {
+        body = Buffer.concat(body).toString();
+        let params;
+        params = new URLSearchParams(body);
+        console.log(params.get('username'), params.get('password'));
+        lib.vlogin(params.get('username'), params.get('password'));
 
 
+
+    });
 }
 
 

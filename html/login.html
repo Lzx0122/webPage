@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+
+    <title>登入</title>
+</head>
+
+<body>
+    <h1>Login</h1>
+    <form method="POST" action="/process-login">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+        <input type="submit" value="Submit">
+
+    </form>
+
+    <button id="login_btn" onclick="handle_click();">按鈕</button>
+    <script src="../script/JavaScript.js"></script>
+</body>
+
+</html>
