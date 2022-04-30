@@ -13,7 +13,7 @@ function open() {
 
     connection.connect();
 }
-export let returnIsSQL = false;
+let returnIsSQL = false;
 function startSQL(strSQL) {
 
     open();
@@ -22,7 +22,7 @@ function startSQL(strSQL) {
             console.log(error);
             connection.end();
             returnIsSQL = false;
-            return returnIsSQL;
+
         }
         console.log(strSQL);
         for (var i = 0; i < results.length; i++) {
@@ -30,17 +30,15 @@ function startSQL(strSQL) {
             console.log(`${results[i].account},${results[i].password}`);
             connection.end();
             returnIsSQL = true;
-            return returnIsSQL;
 
         };
         connection.end();
         returnIsSQL = false;
-        return returnIsSQL;
     })
 
-
+    return returnIsSQL;
 
 }
-
+export { returnIsSQL }
 export { open };
 export { startSQL };
