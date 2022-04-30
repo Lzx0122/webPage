@@ -1,6 +1,7 @@
 
 import * as mysql from 'mysql';
 
+
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -12,7 +13,7 @@ function open() {
 
     connection.connect();
 }
-
+export let returnIsSQL = false;
 function startSQL(strSQL) {
 
     open();
@@ -20,18 +21,21 @@ function startSQL(strSQL) {
         if (error) {
             console.log(error);
             connection.end();
-            return "false";
+            returnIsSQL = false;
+            return returnIsSQL;
         }
         console.log(strSQL);
         for (var i = 0; i < results.length; i++) {
 
             console.log(`${results[i].account},${results[i].password}`);
             connection.end();
-            return "true";
+            returnIsSQL = true;
+            return returnIsSQL;
 
         };
         connection.end();
-        return "false";
+        returnIsSQL = false;
+        return returnIsSQL;
     })
 
 
