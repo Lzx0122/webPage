@@ -27,7 +27,7 @@ body {
     background: rgba(0, 0, 0, 0.7);
     border-radius: 40px;
     color: #fff;
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 15px 25px rgba(67, 246, 252, 0.8);
 
 }
 
@@ -60,7 +60,7 @@ body {
     text-align: center;
     letter-spacing: 1px;
     margin-bottom: 2rem;
-    color: #ff652f;
+    color: #2feeff;
 }
 
 
@@ -94,7 +94,7 @@ body {
 .form .input-group input:focus+label,
 .form .input-group input:valid+label {
     transform: translateY(-18px);
-    color: #ff652f;
+    color: #2feeff;
     font-size: .8rem;
 }
 
@@ -103,7 +103,7 @@ body {
     margin-left: 100px;
     border: none;
     outline: none;
-    background: #ff652f;
+    background: #2feeff;
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 1px;
