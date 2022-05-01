@@ -2,23 +2,32 @@
 <html>
 
 <head>
-    <meta charset="UTF-8" />
 
+    <meta charset="UTF-8" />
     <title>登入</title>
+    <link href="../css/style.css" rel="stylesheet" type="text/css">
+
 </head>
 
 <body>
-    <h1>Login</h1>
-    <form method="POST" action="/process-login">
-        <label for="username">Username</label>
-        <input type="text" name="username" id="username">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password">
-        <input type="submit" value="Submit">
 
-    </form>
+    <div class="login-wrapper">
+        <form method="POST" action="/process-login" class="form">
+            <img src="../img/avatar.png" alt="">
+            <h1>Login</h1>
+            <div class="input-group">
+                <input type="text" name="username" id="username" required>
+                <label for="username">Username</label>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" id="password" required>
+                <label for="password">Password</label>
+            </div>
+            <input type="submit" value="Login" class="submit-btn">
+        </form>
+    </div>
 
-    <button id="login_btn" onclick="handle_click();">按鈕</button>
+
     <script src="../script/JavaScript.js"></script>
 </body>
 

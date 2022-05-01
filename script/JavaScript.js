@@ -1,4 +1,4 @@
-handle_click = function () {
+let handle_click = function () {
 
 
     alert("登入成功");
