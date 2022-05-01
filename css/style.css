@@ -48,7 +48,7 @@ body {
 .form img {
     position: absolute;
     top: -50px;
-    left: 135px;
+    left: calc(50% - 50px);
     width: 100px;
     background: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
@@ -100,7 +100,9 @@ body {
 
 .submit-btn {
     display: block;
-    margin-left: 100px;
+
+
+    margin-left: auto;
     border: none;
     outline: none;
     background: #2feeff;

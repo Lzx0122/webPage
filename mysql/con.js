@@ -21,8 +21,6 @@ function open() {
         await createCon();
         resolve(connection.connect());
     })
-
-
 }
 let returnIsSQL = false;
 function runSQL(strSQL) {
@@ -54,9 +52,6 @@ function runSQL(strSQL) {
         resolve(returnIsSQL);
     })
 
-
-}
-function connectionFun() {
 
 }
 
