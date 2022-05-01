@@ -2,6 +2,10 @@
 import * as mysql from 'mysql';
 
 var connection
+var person = {
+    userid: "",
+    username: ""
+}
 function createCon() {
 
     return new Promise((resolve, reject) => {
@@ -34,8 +38,8 @@ function runSQL(strSQL) {
                     console.log(error);
                 }
                 for (var i = 0; i < results.length; i++) {
-
-                    console.log(`${results[i].account},${results[i].password}`);
+                    person.userid = results[i].account;
+                    //console.log(`${results[i].account},${results[i].password}`);
                     returnIsSQL = true;
 
                 };
@@ -48,7 +52,7 @@ function runSQL(strSQL) {
 
         })
 
-        console.log('consql');
+        //console.log('consql');
         resolve(returnIsSQL);
     })
 
@@ -62,3 +66,4 @@ function runSQL(strSQL) {
 export { open };
 
 export { runSQL };
+export { person }

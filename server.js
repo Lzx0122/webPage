@@ -4,15 +4,20 @@
 import * as lib from "./script/lib.js";
 import * as http from "http";
 import * as fs from "fs";
+import { person } from "./mysql/con.js";
+import * as ejs from "ejs";
+var tmp
+var ejsdata
+
 // import * as express from "express";
 // var app = express;
 // app.use('/css/style.css', express.static(__dirname + '/img'))
 // app.listen(3000);
 
-
+var isaLogin = false;
 const sendRespones = (filename, statusCode, response) => {
 
-    console.log(`sendRespones ${filename}`);
+    //console.log(`sendRespones ${filename}`);
     fs.readFile(`.${filename}`, (error, data) => {
         if (error) {
             response.statusCode = 500;
@@ -46,7 +51,7 @@ const server = http.createServer((request, response) => {
 
     const method = request.method;
     const url = request.url;
-    console.log(url, method);
+    //console.log(url, method);
     if (method === "GET") {
         gethtml(url, response);
     } else if (method === "POST") {
@@ -67,17 +72,24 @@ const server = http.createServer((request, response) => {
                 function loginhtml() {
                     return new Promise(async (resolve, reject) => {
                         let re = await lib.vlogin(params.get('username'), params.get('password'))
-                        console.log('loginhtml')
+                        //console.log('loginhtml')
                         resolve(re)
                     })
                 }
                 async function getlogin() {
-                    let isaLogin = await loginhtml();
-                    console.log("isaLogin");
+                    isaLogin = await loginhtml();
+                    //console.log("isaLogin");
                     if (isaLogin === true) {
-                        console.log('登入成功');
+                        tmp = fs.readFileSync("./html/main.ejs", 'utf-8')
+                        ejsdata = ejs.render(tmp, {
+                            userid: person.userid
+                        })
+
+                        console.log(person.userid, '登入成功', new Date(Date.now()));
                         response.statusCode = 301;
-                        response.setHeader("Location", "/main.html");
+
+                        response.setHeader("Location", "/main.ejs");
+
 
                     } else {
                         console.log('登入失敗');
@@ -85,7 +97,7 @@ const server = http.createServer((request, response) => {
                         response.statusCode = 301;
                         response.setHeader("Location", "/");
                     }
-                    response.end();
+                    response.end(ejsdata);
                 }
 
                 getlogin();
@@ -98,18 +110,20 @@ const server = http.createServer((request, response) => {
 });
 // 檢查url內html位置判斷 發送到 sendRespones
 function gethtml(url, response) {
-    console.log("url", url)
-    console.log(`gethtml ${url}`);
+    //console.log("url", url)
+    //console.log(`gethtml ${url}`);
     if (url === "/") {
-        sendRespones("/html/login.html", 200, response);
+
+        sendRespones("/html/login.ejs", 200, response);
         return true;
     }
     if (url === "/login.html") {
-        sendRespones("/html/login.html", 200, response);
+        sendRespones("/html/login.ejs", 200, response);
         return true;
     }
-    if (url === "/main.html") {
-        sendRespones("/html/main.html", 200, response);
+    if (url === "/main.ejs" && isaLogin === true) {
+
+        sendRespones("/html/main.ejs", 200, response);
         return true;
     }
     if (url.includes("/script/")) {
