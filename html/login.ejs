@@ -24,6 +24,11 @@
                 <label for="password">Password</label>
             </div>
             <input type="submit" value="Login" class="submit-btn">
+            <div class="Login-Failed">
+                <% if(showLoginFailed){%>
+                    <%-loginFailed%>
+                        <%}%>
+            </div>
         </form>
     </div>
 

@@ -4,7 +4,8 @@ import * as mysql from 'mysql';
 var connection
 var person = {
     userid: "",
-    username: ""
+    username: "",
+    permission: "",
 }
 function createCon() {
 
@@ -39,6 +40,9 @@ function runSQL(strSQL) {
                 }
                 for (var i = 0; i < results.length; i++) {
                     person.userid = results[i].account;
+                    person.username = results[i].Name;
+                    person.permission = results[i].permission;
+
                     //console.log(`${results[i].account},${results[i].password}`);
                     returnIsSQL = true;
 

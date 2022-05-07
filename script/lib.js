@@ -23,7 +23,7 @@ function getlogin(username, password) {
     // })
 
     return new Promise(async (resolve, reject) => {
-        let re = await con.runSQL(`select * from Employee where account='${username}' and password='${password}'`)
+        let re = await con.runSQL(`select account,password,Name,permission from Employee inner join permission on Employee.permissionID = permission.permissionID where account='${username}' and password='${password}'`)
         //console.log("vlogin");
         //console.log('consql', re);
         resolve(re)

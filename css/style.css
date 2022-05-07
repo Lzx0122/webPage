@@ -113,3 +113,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
+
+.Login-Failed {
+    color: #ff2f2f;
+}

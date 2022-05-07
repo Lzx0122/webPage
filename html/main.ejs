@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 
 <head>
@@ -9,8 +8,23 @@
 
 <body>
     <h1>主頁</h1>
-    <h1>使用者ID: <%= userid %>
-    </h1>
+    <h3>
+        使用者帳號:<%- userid %>
+    </h3>
+    <h3>
+        使用者姓名:<%- username%>
+    </h3>
+    <h3>
+        使用者權限:<%-permission%>
+    </h3>
+
+
+    <form method="POST" action="/logout">
+
+        <input type="submit" value="Login" class="submit-btn">
+        <div class="Login-Failed">
+        </div>
+    </form>
 </body>
 
 </html>
