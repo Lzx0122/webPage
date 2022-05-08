@@ -4,27 +4,80 @@
     <meta charset="UTF-8" />
     </meta>
     <title>主頁</title>
+    <link href="../css/main.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <h1>主頁</h1>
-    <h3>
-        使用者帳號:<%- userid %>
-    </h3>
-    <h3>
-        使用者姓名:<%- username%>
-    </h3>
-    <h3>
-        使用者權限:<%-permission%>
-    </h3>
+    <div class="container-all">
 
 
-    <form method="POST" action="/logout">
+        <!-- left -->
+        <div class="container-left">
+            <!-- 選單 -->
+            <nav id='sidebar'>
+                <button type="button" id="collapse" class="collapse-btn">
+                    <img src='../img/list.png' style='width: 30px; height: 30px;' />
+                </button>
+                <ul class="list-unstyled">
+                    <img src='../img/user.png' class="user-img"></img>
+                    <p>
+                        <%- username%>
+                    </p>
+                    <li>
+                        <a type="button" onclick="main_iframe('/home')">首頁<img src='../img/house.png'
+                                style='width: 20px; height: 20px; float: right;' /></a>
+                    </li>
 
-        <input type="submit" value="Login" class="submit-btn">
-        <div class="Login-Failed">
+                    <%permission.forEach(function(per) {%>
+                        <%if(per==="個人資料" ){%>
+                            <li>
+                                <a type="button" onclick="main_iframe('/user')">個人資料<img src='../img/user (1).png'
+                                        style='width: 20px; height: 20px; float: right;' /></a>
+                            </li>
+                            <%}%>
+                                <%if(per==="帳號管理" ){%>
+                                    <li>
+                                        <a href="#">帳號管理<img src='../img/team-management.png'
+                                                style='width: 20px; height: 20px;float: right;' /></a>
+                                    </li>
+                                    <%}%>
+                                        <%if(per==="借資" ){%>
+                                            <li>
+                                                <a href="#">借資<img src='../img/salary.png'
+                                                        style='width: 20px; height: 20px;float: right;display:block;' /></a>
+                                            </li>
+                                            <%}%>
+                                                <%})%>
+                </ul>
+                <form method="POST" action="/logout">
+
+                    <input type="submit" value="登出" class="logout-btn">
+                    <div class="Login-Failed">
+                    </div>
+                </form>
+
+            </nav>
         </div>
-    </form>
+        <!-- right -->
+        <div class="container-right">
+            <div class="container-fluid">
+                <h1>XX工程</h1>
+            </div>
+            <div>
+                <iframe id="main-iframe" src="/home" frameborder="0" width="100%" height="100%">
+
+                </iframe>
+            </div>
+        </div>
+    </div>
+    <script src="../script/JavaScript.js"></script>
 </body>
 
 </html>

@@ -1,5 +1,13 @@
-let handle_click = function () {
 
+$(document).ready(function () {
+    $("#collapse").on("click", () => {
+        $("#sidebar").toggleClass("active");
 
-    alert("登入成功");
+    })
+    $("#user").on("click", () => {
+        $("#main-iframe").toggleSrc("/user");
+    })
+})
+function main_iframe(e) {
+    document.getElementById("main-iframe").src = `${e}`
 }

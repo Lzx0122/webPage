@@ -24,33 +24,36 @@ app.use('/script', express.static(__dirname + "/script"));
 app.use(session({
     secret: "mySecret",
     name: 'user',
-    cookie: { maxAge: 1000 * 60 * 30 },
+    cookie: { maxAge: 1000 * 60 * 60 },
     saveUninitialized: false,
     resave: true
 }))
-
+//登入畫面
 app.get("/", (req, res) => {
     if (req.session.user) {
         var ejsDataArray = {
-            loginFailed: "<p>Login-Failed!!</p>",
+            loginFailed: "<p>帳號或密碼錯誤</p>",
             showLoginFailed: true,
             userid: '',
             username: '',
-            permission: ''
+            permission: '',
+            profession: ''
         };
     } else {
         var ejsDataArray = {
-            loginFailed: "<p>Login-Failed!!</p>",
+            loginFailed: "<p>帳號或密碼錯誤</p>",
             showLoginFailed: false,
             userid: '',
             username: '',
-            permission: ''
+            permission: '',
+            profession: ''
         };
     }
 
     sendejs(ejsDataArray, "/html/login.ejs", res, 200);
 })
-app.get("/main.ejs", (req, res) => {
+//主頁
+app.get("/main", (req, res) => {
     if (req.session.user) {
 
         console.log(userdata)
@@ -60,8 +63,28 @@ app.get("/main.ejs", (req, res) => {
     }
 
 })
+app.get("/home", (req, res) => {
+    if (req.session.user) {
 
 
+        sendejs(userdata[`${req.session.user}`], "/html/home.ejs", res, 200);
+    } else {
+        sendRespones("/404.html", 404, res);
+    }
+
+})
+app.get("/user", (req, res) => {
+    if (req.session.user) {
+
+
+        sendejs(userdata[`${req.session.user}`], "/html/user.ejs", res, 200);
+    } else {
+        sendRespones("/404.html", 404, res);
+    }
+
+})
+
+//登入post 
 app.post("/process-login", (request, response) => {
     let body = [];
     request.on("data", (chunk) => {
@@ -89,20 +112,24 @@ app.post("/process-login", (request, response) => {
                 response.statusCode = 301;
                 request.session.user = person.userid;
                 var ejsDataArray = {
-                    loginFailed: "<p>Login-Failed!!</p>",
+                    loginFailed: "<p>帳號或密碼錯誤</p>",
                     showLoginFailed: false,
                     userid: '',
                     username: '',
-                    permission: ''
+                    permission: '',
+                    division: '',
+                    profession: ''
                 };
                 ejsDataArray.showLoginFailed = false;
                 ejsDataArray.userid = request.session.user
                 ejsDataArray.username = person.username
-                ejsDataArray.permission = person.permission
+                ejsDataArray.permission = person.permission.split(",")
+                ejsDataArray.profession = person.profession
+                ejsDataArray.division = person.division
                 let dataArray = ejsDataArray
                 userdata[`${ejsDataArray.userid}`] = dataArray
                 //console.log(request.sessionID)
-                response.setHeader("Location", "./main.ejs");
+                response.setHeader("Location", "./main");
                 response.end();
             } else {
 
@@ -117,6 +144,7 @@ app.post("/process-login", (request, response) => {
         getlogin();
     })
 })
+//登出post 
 app.post('/logout', (req, res) => {
     console.log(`${req.session.user} 已登出`)
     delete userdata[`${req.session.user}`]
@@ -135,6 +163,7 @@ app.listen(3000, console.log(`Server is running at http://127.0.0.1:3000`));
 
 
 var isaLogin = false;
+
 const sendRespones = (filename, statusCode, response) => {
     fs.readFile(`.${filename}`, (error, data) => {
         if (error) {
@@ -164,6 +193,7 @@ const sendRespones = (filename, statusCode, response) => {
         }
     })
 }
+//ejs html 
 const sendejs = (ejsDataArray, filename, response, statusCode) => {
     var tmp = fs.readFileSync(`.${filename}`, "utf-8");
     var ejsdata = ejs.render(tmp, ejsDataArray)
