@@ -31,60 +31,70 @@ function open() {
 }
 let returnIsSQL = false;
 function runSQL(strSQL, action) {
+    try {
+        return new Promise(async (resolve, reject) => {
+            await open();
+            let re = await new Promise((resolve, reject) => {
+                connection.query(strSQL, async (error, results, fields) => {
 
-    return new Promise(async (resolve, reject) => {
-        await open();
-        let re = await new Promise((resolve, reject) => {
-            connection.query(strSQL, async (error, results, fields) => {
+                    if (error) {
+                        console.log(error);
+                    }
+                    if (action === 'login') {
+                        for (var i = 0; i < results.length; i++) {
+                            person.userid = results[i].account;
+                            person.username = results[i].Name;
+                            person.permission = results[i].permission;
+                            person.profession = results[i].Profession;
+                            await runSQL(`select Profession from Profession where ProfessionID=(select UpLayer from Profession where Profession='${person.profession}')`, 'getValue')
+                            person.division = getValue.Profession;
 
-                if (error) {
-                    console.log(error);
-                }
-                if (action === 'login') {
-                    for (var i = 0; i < results.length; i++) {
-                        person.userid = results[i].account;
-                        person.username = results[i].Name;
-                        person.permission = results[i].permission;
-                        person.profession = results[i].Profession;
-                        await runSQL(`select Profession from Profession where ProfessionID=(select UpLayer from Profession where Profession='${person.profession}')`, 'getValue')
-                        person.division = getValue.Profession;
+                            returnIsSQL = true;
 
-                        returnIsSQL = true;
+                        };
+                        a();
+                    }
+                    if (action === 'getValue') {
+                        try {
+                            getValue = results[0]
+                        } catch {
+                            console.log("dddwefwfwedfwfw")
+                        }
 
-                    };
-                    a();
-                }
-                if (action === 'getValue') {
-                    getValue = results[0]
 
+                        resolve();
+
+                    }
+                    if (action === 'getTable') {
+
+                        resolve(results)
+
+                    }
+
+                })
+                function a() {
+                    connection.end();
                     resolve();
-
                 }
-                if (action === 'getTable') {
-
-                    resolve(results)
-
-                }
-
             })
-            function a() {
-                connection.end();
-                resolve();
+            //console.log('consql');
+            if (action === 'login') {
+                resolve(returnIsSQL);
             }
+            if (action === 'getValue') {
+                resolve(getValue);
+            }
+            if (action == 'getTable') {
+
+                resolve(re);
+            }
+
         })
-        //console.log('consql');
-        if (action === 'login') {
-            resolve(returnIsSQL);
-        }
-        if (action === 'getValue') {
-            resolve(getValue);
-        }
-        if (action == 'getTable') {
-
-            resolve(re);
-        }
-
-    })
+    } catch (e) {
+        connection.end();
+        resolve();
+        console.log('1111')
+    }
 }
 
 export { open };

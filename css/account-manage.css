@@ -8,7 +8,7 @@
 
 }
 
-.form-wrapper {
+.CRUD-wrapper {
     height: 50%;
     width: 100vw;
     display: flex;
@@ -21,7 +21,7 @@
 
     position: relative;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1500px;
     padding: 40px 40px 40px;
     background: rgba(0, 0, 0, 0.7);
     border-radius: 40px;
@@ -31,16 +31,16 @@
 
 }
 
-.form-form {
+.CRUD-form {
 
     position: relative;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1500px;
     padding: 40px 40px 40px;
     background: rgba(0, 0, 0, 0.7);
     border-radius: 40px;
     color: #fff;
-    box-shadow: 0 15px 25px rgba(67, 246, 252, 0.8);
+    box-shadow: 0 15px 25px rgba(252, 67, 67, 0.8);
 
 
 }
@@ -88,14 +88,21 @@
     background-color: rgba(0, 0, 0, 0.597);
 }
 
-.form-table {
+.CRUD-table {
     table-layout: fixed;
     color: #fff;
-    max-width: 100%;
+    min-width: 100%;
     width: auto;
     border-collapse: collapse #fff;
     background-color: rgba(0, 0, 0, 0.597);
 }
+
+.CRUD-table input[type='text'] {
+    min-width: 20%;
+    width: 100%;
+    max-width: 100%;
+}
+
 
 .account-table tr {
     table-layout: fixed;
@@ -106,4 +113,62 @@
 .selected {
     background-color: #2feeff90;
     color: #fff;
+}
+
+
+
+
+
+.add-btn {
+    background-color: #21d05b;
+
+    min-height: 1rem;
+    color: #fff;
+    border-radius: 5px;
+    padding: 0.6rem 1rem;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.add-btn:hover {
+    background-color: #1da54a;
+    transition: all 1s;
+}
+
+.update-btn {
+    background-color: #2185d0;
+    border: none;
+    min-height: 1rem;
+    color: #fff;
+    border-radius: 5px;
+    padding: 0.6rem 1rem;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.update-btn:hover {
+    background-color: #1a6fb1;
+    transition: all 1s;
+}
+
+.delete-btn {
+    background-color: #f51010;
+    border: none;
+    min-height: 1rem;
+    color: #fff;
+    border-radius: 5px;
+    padding: 0.6rem 1rem;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.delete-btn:hover {
+    background-color: #b80f0f;
+    transition: all 1s;
 }

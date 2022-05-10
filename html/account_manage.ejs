@@ -18,8 +18,9 @@
 
     <div class="table-wrapper">
         <form class="table-form">
+            <h3>人員清單</h3>
             <Table id="table" class="account-table">
-                <tr>
+                <tr id="header-tr">
                     <th scope="col">員工帳號</td>
                     <th scope="col">密碼</td>
                     <th scope="col">員工姓名</td>
@@ -28,38 +29,45 @@
                     <th scope="col">職業</td>
 
                 </tr>
-                <%for(var i=0 ; i< Table.length ; i++){%>
-                    <tr>
-                        <td>
-                            <%-Table[i].account%>
-                        </td>
-                        <td>
-                            <%-Table[i].password%>
-                        </td>
-                        <td>
-                            <%-Table[i].Name%>
-                        </td>
-                        <td>
-                            <%-Table[i].permission%>
-                        </td>
-                        <td>
-                            <%-Table[i].Division%>
-                        </td>
-                        <td>
-                            <%-Table[i].Profession%>
-                        </td>
+                <%try{%>
 
-                    </tr>
-                    <%}%>
+
+                    <%for(var i=0 ; i< Table.length ; i++){%>
+                        <tr>
+                            <td>
+                                <%-Table[i].account%>
+                            </td>
+                            <td>
+                                <%-Table[i].password%>
+                            </td>
+                            <td>
+                                <%-Table[i].Name%>
+                            </td>
+                            <td>
+                                <%-Table[i].permission%>
+                            </td>
+                            <td>
+                                <%-Table[i].Division%>
+                            </td>
+                            <td>
+                                <%-Table[i].Profession%>
+                            </td>
+
+                        </tr>
+                        <%}%>
+                            <%}catch(e){%>
+                                <%console.log(e)%>
+                                    <%}%>
             </Table>
 
 
         </form>
 
     </div>
-    <div class="form-wrapper">
-        <form class="form-form">
-            <Table class="form-table">
+    <div class="CRUD-wrapper">
+        <form class="CRUD-form">
+            <h3>新增｜修改｜刪除</h3>
+            <Table id='CRUD' class="CRUD-table">
                 <tr>
                     <th scope="col">員工帳號</td>
                     <th scope="col">密碼</td>
@@ -71,27 +79,29 @@
 
                 <tr>
                     <td>
-                        <input type="text">
+                        <input id='account' type="text">
                     </td>
                     <td>
-                        <input type="text">
+                        <input id='password' type="text">
                     </td>
                     <td>
-                        <input type="text">
+                        <input id='Name' type="text">
                     </td>
                     <td>
-                        <input type="text">
+                        <input id='permission' type="text">
                     </td>
                     <td>
-                        <input type="text">
+                        <input id='Division' type="text">
                     </td>
                     <td>
-                        <input type="text">
+                        <input id='Profession' type="text">
                     </td>
                 </tr>
 
             </Table>
-
+            <input type="button" value="新增" name="" class="add-btn">
+            <input type="button" value="修改" name="" class="update-btn">
+            <input type="button" value="刪除" name="" class="delete-btn">
 
         </form>
 

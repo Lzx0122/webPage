@@ -103,9 +103,15 @@ app.get("/account_manage", async (req, res) => {
 //帳號管理-->查詢部門
 function Division(ejsDataArray) {
     return new Promise(async (resolve, reject) => {
-        for (let i = 0; i < ejsDataArray['Table'].length; i++) {
-            let Value = await lib.getTable(`select Profession from Profession where ProfessionID=(select UpLayer from Profession where Profession='${ejsDataArray['Table'][i].Profession}')`, 'getValue')
-            ejsDataArray['Table'][i]['Division'] = Value.Profession
+        try {
+
+
+            for (let i = 0; i < ejsDataArray['Table'].length; i++) {
+                let Value = await lib.getTable(`select Profession from Profession where ProfessionID=(select UpLayer from Profession where Profession='${ejsDataArray['Table'][i].Profession}')`, 'getValue')
+                ejsDataArray['Table'][i]['Division'] = Value.Profession
+            }
+        } catch (e) {
+            console.log(e)
         }
         console.log(ejsDataArray);
         resolve(ejsDataArray);

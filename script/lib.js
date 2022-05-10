@@ -14,7 +14,7 @@ async function vlogin(username, password) {
 async function getTable(strSQL, action) {
     return new Promise(async (resolve, reject) => {
         let re = await con.runSQL(strSQL, action);
-        console.log(re)
+
         resolve(re)
     })
 }
