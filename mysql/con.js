@@ -34,9 +34,9 @@ function runSQL(strSQL, action) {
 
     return new Promise(async (resolve, reject) => {
         await open();
-        await new Promise((resolve, reject) => {
+        let re = await new Promise((resolve, reject) => {
             connection.query(strSQL, async (error, results, fields) => {
-                console.log(strSQL)
+
                 if (error) {
                     console.log(error);
                 }
@@ -56,7 +56,13 @@ function runSQL(strSQL, action) {
                 }
                 if (action === 'getValue') {
                     getValue = results[0]
+
                     resolve();
+
+                }
+                if (action === 'getTable') {
+
+                    resolve(results)
 
                 }
 
@@ -67,7 +73,17 @@ function runSQL(strSQL, action) {
             }
         })
         //console.log('consql');
-        resolve(returnIsSQL);
+        if (action === 'login') {
+            resolve(returnIsSQL);
+        }
+        if (action === 'getValue') {
+            resolve(getValue);
+        }
+        if (action == 'getTable') {
+
+            resolve(re);
+        }
+
     })
 }
 

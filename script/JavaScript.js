@@ -11,3 +11,9 @@ $(document).ready(function () {
 function main_iframe(e) {
     document.getElementById("main-iframe").src = `${e}`
 }
+
+
+$('#table tr').click(function () {
+    $(this).addClass('selected').siblings().removeClass('selected')
+    alert($('#table tr.selected').text())
+})

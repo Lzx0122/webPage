@@ -17,10 +17,13 @@ const app = express();
 var userdata = {};
 
 
-
+// 讀資料夾內所有檔案
 app.use('/css', express.static(__dirname + "/css"));
 app.use('/img', express.static(__dirname + "/img"));
 app.use('/script', express.static(__dirname + "/script"));
+app.use('/mysql', express.static(__dirname + "/mysql"));
+
+
 app.use(session({
     secret: "mySecret",
     name: 'user',
@@ -30,6 +33,7 @@ app.use(session({
 }))
 //登入畫面
 app.get("/", (req, res) => {
+
     if (req.session.user) {
         var ejsDataArray = {
             loginFailed: "<p>帳號或密碼錯誤</p>",
@@ -63,26 +67,50 @@ app.get("/main", (req, res) => {
     }
 
 })
+
+//公告
 app.get("/home", (req, res) => {
     if (req.session.user) {
-
-
         sendejs(userdata[`${req.session.user}`], "/html/home.ejs", res, 200);
     } else {
         sendRespones("/404.html", 404, res);
     }
 
 })
+//個人資料
 app.get("/user", (req, res) => {
     if (req.session.user) {
-
-
         sendejs(userdata[`${req.session.user}`], "/html/user.ejs", res, 200);
     } else {
         sendRespones("/404.html", 404, res);
     }
-
 })
+//帳號管理
+app.get("/account_manage", async (req, res) => {
+    let Table = await lib.getTable('select account,password,Name,permission,Profession from Employee inner join permission on Employee.permissionID = permission.permissionID inner join Profession on Employee.professionID = Profession.ProfessionID', 'getTable');
+
+    let ejsDataArray = {
+        Table: Table
+    }
+    ejsDataArray = await Division(ejsDataArray);
+
+    if (req.session.user) {
+        sendejs(ejsDataArray, "/html/account_manage.ejs", res, 200);
+    } else {
+        sendRespones("/404.html", 404, res);
+    }
+})
+//帳號管理-->查詢部門
+function Division(ejsDataArray) {
+    return new Promise(async (resolve, reject) => {
+        for (let i = 0; i < ejsDataArray['Table'].length; i++) {
+            let Value = await lib.getTable(`select Profession from Profession where ProfessionID=(select UpLayer from Profession where Profession='${ejsDataArray['Table'][i].Profession}')`, 'getValue')
+            ejsDataArray['Table'][i]['Division'] = Value.Profession
+        }
+        console.log(ejsDataArray);
+        resolve(ejsDataArray);
+    })
+}
 
 //登入post 
 app.post("/process-login", (request, response) => {
@@ -195,8 +223,10 @@ const sendRespones = (filename, statusCode, response) => {
 }
 //ejs html 
 const sendejs = (ejsDataArray, filename, response, statusCode) => {
+
     var tmp = fs.readFileSync(`.${filename}`, "utf-8");
     var ejsdata = ejs.render(tmp, ejsDataArray)
+
     response.statusCode = statusCode;
     response.setHeader("Content-Type", "text/html")
     response.end(ejsdata);
