@@ -27,11 +27,11 @@
                     <th scope="col">權限</td>
                     <th scope="col">部門</td>
                     <th scope="col">職業</td>
+                    <th scope="col">到職日</td>
+                    <th scope="col">投保薪資</th>
 
                 </tr>
                 <%try{%>
-
-
                     <%for(var i=0 ; i< Table.length ; i++){%>
                         <tr>
                             <td>
@@ -52,6 +52,12 @@
                             <td>
                                 <%-Table[i].Profession%>
                             </td>
+                            <td>
+                                <%-Table[i].onboardDate%>
+                            </td>
+                            <td>
+                                <%-Table[i].InsuredSalary%>
+                            </td>
 
                         </tr>
                         <%}%>
@@ -65,7 +71,7 @@
 
     </div>
     <div class="CRUD-wrapper">
-        <form class="CRUD-form">
+        <form class="CRUD-form" method="POST" action="/CRUD-employee-Form">
             <h3>新增｜修改｜刪除</h3>
             <Table id='CRUD' class="CRUD-table">
                 <tr>
@@ -73,35 +79,63 @@
                     <th scope="col">密碼</td>
                     <th scope="col">員工姓名</td>
                     <th scope="col">權限</td>
-                    <th scope="col">部門</td>
+                        <!-- <th scope="col">部門</td> -->
                     <th scope="col">職業</td>
-                </tr>
+                    <th scope="col">到職日</td>
+                    <th scope="col">投保薪資</td>
+                    <th scope="col">備註</td>
 
+                </tr>
                 <tr>
                     <td>
-                        <input id='account' type="text">
+                        <input id='account' type="text" name="account">
                     </td>
                     <td>
-                        <input id='password' type="text">
+                        <input id='password' type="text" name="password">
                     </td>
                     <td>
-                        <input id='Name' type="text">
+                        <input id='Name' type="text" name="Name">
+                    </td>
+                    <!-- <td>
+                        <input id='permission' type="text" name="permission">
+                    </td> -->
+                    <td>
+                        <select type='text' name="permission" id='permission'>
+
+                            <option value="個人資料,借資">個人資料,借資</option>
+                            <option value="個人資料,帳號管理,借資">個人資料,帳號管理,借資</option>
+                        </select>
+                    </td>
+                    <!-- <td>
+                        <input id='Division' type="text" name="Division">
+                    </td> -->
+                    <!-- <td>
+                        <input id='Profession' type="text" name="Profession">
+                    </td> -->
+                    <td>
+                        <select type='text' name="Profession" id='Profession'>
+                            <option value="員工">員工</option>
+                            <option value="老闆">老闆</option>
+
+                        </select>
                     </td>
                     <td>
-                        <input id='permission' type="text">
+                        <input id='onboardDate' type="text" name="onboardDate">
                     </td>
                     <td>
-                        <input id='Division' type="text">
+                        <input id='InsuredSalary' type="text" name="InsuredSalary">
                     </td>
                     <td>
-                        <input id='Profession' type="text">
+                        <input id='note' type="text" name="note">
                     </td>
                 </tr>
 
             </Table>
-            <input type="button" value="新增" name="" class="add-btn">
-            <input type="button" value="修改" name="" class="update-btn">
-            <input type="button" value="刪除" name="" class="delete-btn">
+            <button type="submit" value="add" name="vote" class="add-btn">新增</button>
+            <button type="submit" value="update" name="vote" class="update-btn">修改</button>
+            <button type="submit" value="delete" name="vote" class="delete-btn">刪除</button>
+            <button type="submit" value="req-add" name="vote" class="add-btn">請求新增</button>
+            <button type="submit" value="req-delete" name="vote" class="delete-btn">請求刪除</button>
 
         </form>
 

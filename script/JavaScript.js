@@ -22,13 +22,22 @@ $('#table tr').click(function () {
     //index 8= Name
     //index 11= permission
     //index 14= Division
-    //index 17 = Profession
+    //index 17= Profession
     document.getElementById('account').value = box[2].trim()
     document.getElementById('password').value = box[5].trim()
     document.getElementById('Name').value = box[8].trim()
     document.getElementById('permission').value = box[11].trim()
-    document.getElementById('Division').value = box[14].trim()
+    //document.getElementById('Division').value = box[14].trim()
     document.getElementById('Profession').value = box[17].trim()
-
+    document.getElementById('onboardDate').value = box[20].trim()
+    document.getElementById('InsuredSalary').value = box[23].trim()
 
 })
+function CRUD_employee_post(path) {
+    alert(path);
+    $("#CRUD-employee-form").removeAttr('action');
+    $("#CRUD-employee-form").attr("action", path)
+
+    $("#CRUD-employee-form").submit();
+
+}

@@ -10,6 +10,9 @@ import session from "express-session";
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import * as send_email from "./script/send_email.js";
+import alert from "alert";
+// import { send } from "./express/lib/response";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -87,7 +90,7 @@ app.get("/user", (req, res) => {
 })
 //帳號管理
 app.get("/account_manage", async (req, res) => {
-    let Table = await lib.getTable('select account,password,Name,permission,Profession from Employee inner join permission on Employee.permissionID = permission.permissionID inner join Profession on Employee.professionID = Profession.ProfessionID', 'getTable');
+    let Table = await lib.getTable('select account,password,Name,permission,Profession,onboardDate,InsuredSalary from Employee inner join permission on Employee.permissionID = permission.permissionID inner join Profession on Employee.professionID = Profession.ProfessionID', 'getTable');
 
     let ejsDataArray = {
         Table: Table
@@ -117,7 +120,72 @@ function Division(ejsDataArray) {
         resolve(ejsDataArray);
     })
 }
+app.post("/CRUD-employee-Form", (req, res) => {
+    let body = [];
 
+
+    req.on('data', (chunk) => {
+        body.push(chunk);
+    })
+    req.on('end', () => {
+        body = Buffer.concat(body).toString();
+        let params;
+        params = new URLSearchParams(body);
+        console.log(params)
+        if (params.get('account') !== 'sa') {
+            if (req.session.user === 'a0908287570@gmail.com') {
+                if (params.get('vote') === 'add') {
+                    lib.getTable(`insert into Employee (account, Name, password, permissionID, professionID,onboardDate,InsuredSalary) 
+                values ('${params.get('account')}',
+                '${params.get('Name')}',
+                '${params.get('password')}',
+                (select permissionID from permission where permission='${params.get('permission')}'),
+                (select professionID from profession where Profession='${params.get('Profession')}'),
+                ${params.get('onboardDate')},
+                ${params.get('InsuredSalary')})`
+                        , "runSQL")
+                    send_email.sendEmail('新增人員', `人員姓名:${params.get('Name')}`, 'a0908287570@gmail.com');
+                    send_email.sendEmail('聯鑑工程', `歡迎 ${params.get('Name')} 先生/小姐 加入
+                    \n帳號:${params.get('account')}
+                    \n密碼:身分證字號`
+                        , params.get('account'));
+                }
+                if (params.get('vote') === 'delete') {
+                    lib.getTable(`delete from Employee where account='${params.get('account')}'`, "runSQL")
+                }
+
+            }
+            if (params.get('vote') === 'update') {
+                lib.getTable(`update Employee set 
+                Name='${params.get('Name')}',
+                password='${params.get('password')}',
+                permissionID=(select permissionID from permission where permission='${params.get('permission')}'),
+                professionID=(select professionID from profession where Profession='${params.get('Profession')}') ,
+                onboardDate='${params.get('onboardDate')}',
+                InsuredSalary='${params.get('InsuredSalary')}'
+                where account='${params.get('account')}'`
+                    , "runSQL");
+            }
+            if (params.get('vote') === 'req-add') {
+                send_email.sendEmail('新增人員確認',
+                    `員工帳號(e-mail)：${params.get('account')}\n
+                密碼(身分證):${params.get('password')}\n
+                員工姓名:${params.get('Name')}\n
+                權限:${params.get('permission')}\n
+                職業:${params.get('Profession')}\n
+                到職日:${params.get('onboardDate')}\n
+                投保薪資:${params.get('InsuredSalary')}\n
+                備註:${params.get('note')}`, 'a0908287570@gmail.com')
+                alert('已發送請求給加退保職務人員');
+            }
+            if (params.get('vote') === 'req-delete') {
+                send_email.sendEmail('刪除人員確認', '', 'a0908287570@gmail.com')
+            }
+        }
+    })
+
+
+})
 //登入post 
 app.post("/process-login", (request, response) => {
     let body = [];
@@ -152,7 +220,9 @@ app.post("/process-login", (request, response) => {
                     username: '',
                     permission: '',
                     division: '',
-                    profession: ''
+                    profession: '',
+                    onboardDate: '',
+                    InsuredSalary: ''
                 };
                 ejsDataArray.showLoginFailed = false;
                 ejsDataArray.userid = request.session.user
@@ -160,6 +230,8 @@ app.post("/process-login", (request, response) => {
                 ejsDataArray.permission = person.permission.split(",")
                 ejsDataArray.profession = person.profession
                 ejsDataArray.division = person.division
+                ejsDataArray.onboardDate = person.onboardDate
+                ejsDataArray.InsuredSalary = person.InsuredSalary
                 let dataArray = ejsDataArray
                 userdata[`${ejsDataArray.userid}`] = dataArray
                 //console.log(request.sessionID)

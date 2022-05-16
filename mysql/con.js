@@ -7,6 +7,8 @@ var person = {
     permission: "",
     division: "",
     profession: "",
+    onboardDate: "",
+    InsuredSalary: ""
 }
 var getValue = "";
 function createCon() {
@@ -31,47 +33,62 @@ function open() {
 }
 let returnIsSQL = false;
 function runSQL(strSQL, action) {
-    try {
-        return new Promise(async (resolve, reject) => {
+
+    return new Promise(async (resolve, reject) => {
+        try {
             await open();
             let re = await new Promise((resolve, reject) => {
-                connection.query(strSQL, async (error, results, fields) => {
 
-                    if (error) {
-                        console.log(error);
-                    }
-                    if (action === 'login') {
-                        for (var i = 0; i < results.length; i++) {
-                            person.userid = results[i].account;
-                            person.username = results[i].Name;
-                            person.permission = results[i].permission;
-                            person.profession = results[i].Profession;
-                            await runSQL(`select Profession from Profession where ProfessionID=(select UpLayer from Profession where Profession='${person.profession}')`, 'getValue')
-                            person.division = getValue.Profession;
-
-                            returnIsSQL = true;
-
-                        };
-                        a();
-                    }
-                    if (action === 'getValue') {
+                try {
+                    connection.query(strSQL, async (error, results, fields) => {
                         try {
-                            getValue = results[0]
-                        } catch {
-                            console.log("dddwefwfwedfwfw")
+                            if (error) {
+                                console.log(error);
+                            }
+                            if (action === 'login') {
+                                for (var i = 0; i < results.length; i++) {
+                                    person.userid = results[i].account;
+                                    person.username = results[i].Name;
+                                    person.permission = results[i].permission;
+                                    person.profession = results[i].Profession;
+                                    await runSQL(`select Profession from Profession where ProfessionID=(select UpLayer from Profession where Profession='${person.profession}')`, 'getValue')
+                                    person.division = getValue.Profession;
+                                    person.onboardDate = results[i].onboardDate;
+                                    person.InsuredSalary = results[i].InsuredSalary;
+
+                                    returnIsSQL = true;
+
+                                };
+                                a();
+                            }
+                            if (action === 'getValue') {
+                                try {
+                                    getValue = results[0]
+                                } catch {
+                                    console.log("dddwefwfwedfwfw")
+                                }
+
+
+                                resolve();
+
+                            }
+                            if (action === 'getTable') {
+
+                                resolve(results)
+
+                            }
+                            if (action === 'runSQL') {
+                                resolve()
+                            }
+                        } catch (e) {
+                            connection.end();
                         }
-
-
-                        resolve();
-
-                    }
-                    if (action === 'getTable') {
-
-                        resolve(results)
-
-                    }
-
-                })
+                    })
+                } catch (e) {
+                    connection.end();
+                    resolve();
+                    console.log('1111')
+                }
                 function a() {
                     connection.end();
                     resolve();
@@ -88,13 +105,13 @@ function runSQL(strSQL, action) {
 
                 resolve(re);
             }
+        } catch (e) {
+            connection.end();
+            resolve();
+            console.log('1111')
+        }
+    })
 
-        })
-    } catch (e) {
-        connection.end();
-        resolve();
-        console.log('1111')
-    }
 }
 
 export { open };

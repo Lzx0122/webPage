@@ -44,10 +44,18 @@
                             <%}%>
                                 <%if(per==="帳號管理" ){%>
                                     <li>
-                                        <a type="button" onclick="main_iframe('/account_manage')">帳號管理<img
-                                                src='../img/team-management.png'
+                                        <a type="button" href="#Employee_sublist" data-bs-toggle="collapse"
+                                            id="dropdown">帳號管理<img src='../img/team-management.png'
                                                 style='width: 20px; height: 20px;float: right;' /></a>
+                                        <ul id="Employee_sublist" class="list-unstyled collapse">
+                                            <li>
+                                                <a type="button" onclick="main_iframe('/account_manage')"
+                                                    class="sublist">新增修改</a>
+                                            </li>
+
+                                        </ul>
                                     </li>
+
                                     <%}%>
                                         <%if(per==="借資" ){%>
                                             <li>

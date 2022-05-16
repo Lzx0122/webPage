@@ -1,5 +1,5 @@
 .table-wrapper {
-    height: 50%;
+    height: auto;
     width: 100vw;
     display: flex;
     justify-content: center;
@@ -24,7 +24,7 @@
     max-width: 1500px;
     padding: 40px 40px 40px;
     background: rgba(0, 0, 0, 0.7);
-    border-radius: 40px;
+    border-radius: 0px;
     color: #fff;
     box-shadow: 0 15px 25px rgba(67, 246, 252, 0.8);
 
@@ -38,9 +38,9 @@
     max-width: 1500px;
     padding: 40px 40px 40px;
     background: rgba(0, 0, 0, 0.7);
-    border-radius: 40px;
+    border-radius: 0px;
     color: #fff;
-    box-shadow: 0 15px 25px rgba(252, 67, 67, 0.8);
+    box-shadow: 0 15px 25px rgba(252, 150, 67, 0.8);
 
 
 }
