@@ -11,8 +11,8 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import * as send_email from "./script/send_email.js";
-import alert from "alert";
-// import { send } from "./express/lib/response";
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -176,7 +176,7 @@ app.post("/CRUD-employee-Form", (req, res) => {
                 到職日:${params.get('onboardDate')}\n
                 投保薪資:${params.get('InsuredSalary')}\n
                 備註:${params.get('note')}`, 'a0908287570@gmail.com')
-                alert('已發送請求給加退保職務人員');
+
             }
             if (params.get('vote') === 'req-delete') {
                 send_email.sendEmail('刪除人員確認', '', 'a0908287570@gmail.com')
