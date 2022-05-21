@@ -179,7 +179,11 @@ app.post("/CRUD-employee-Form", (req, res) => {
 
             }
             if (params.get('vote') === 'req-delete') {
-                send_email.sendEmail('刪除人員確認', '', 'a0908287570@gmail.com')
+                send_email.sendEmail('刪除人員確認', `
+                員工姓名：${params.get('Name')}\n
+                備註:${params.get('vote')}
+                
+                `, 'a0908287570@gmail.com')
             }
         }
     })
